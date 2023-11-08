@@ -1,93 +1,82 @@
-// const background = document.getElementsByClassName("list-group-item");
-// background[2].style.backgroundColor = "green";
-// for(var i =0;i<background.length;i++){
-//     background[i].style.fontWeight = 'bold';
-// }
-// const item = document.getElementsByTagName('li');
-// for(var i =0;i<item.length;i++){
-//       item[i].style.backgroundColor = '#f4f4f4'
-//     }
+var form = document.getElementById('addForm');
+var itemList = document.getElementById('items');
+var filter = document.getElementById('filter');
 
-//QuerySelector
-// const que = document.querySelector('.list-group-item:nth-child(2)');
-// que.style.backgroundColor='green'
+// Form submit event
+form.addEventListener('submit', addItem);
+// Delete event
+itemList.addEventListener('click', removeItem);
+// Filter event
+filter.addEventListener('keyup', filterItems);
 
-// const third = document.querySelector('.list-group-item:nth-child(3)');
-// third.style.display = 'none'
+// Add item
+function addItem(e){
+  e.preventDefault();
 
-// //QuerySelectorAll
-// const lists = document.querySelectorAll('li');
-// lists[1].style.color='green'
-// for(var i=0;i<lists.length;i++){
-//     if(lists[i]%2!=0){
-//         lists[i].style.backgroundColor='green'
-//     }
-// }
+  // Get input value
+  var newItem = document.getElementById('item').value;
 
-//Traversing the DOM
-var itemList = document.querySelector('#items');
-//parentNode
-// console.log(itemList.parentNode);
-// itemList.parentNode.style.backgroundColor = '#f4f4f4';
+  // Create new li element
+  var li = document.createElement('li');
+  // Add class
+  li.className = 'list-group-item';
+  // Add text node with input value
+  li.appendChild(document.createTextNode(newItem));
 
-// console.log(itemList.parentNode.parentNode);//container
-// console.log(itemList.parentNode.parentNode.parentNode);//main
+  // Create del button element
+  var deleteBtn = document.createElement('button');
 
-//parentElement
-// console.log(itemList.parentElement);
-// itemList.parentElement.style.backgroundColor = '#f4f4f4';
+  // Add classes to del button
+  deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
 
-// console.log(itemList.parentElement.parentElement);//container
-// console.log(itemList.parentElement.parentElement.parentElement);//main
+  // Append text node
+  deleteBtn.appendChild(document.createTextNode('X'));
+
+  // Append button to li
+  li.appendChild(deleteBtn);
+
+  // Append li to list
+  itemList.appendChild(li);
+}
+
+var items = document.getElementById('items');
+var btns = document.getElementsByClassName('btn btn-danger btn-sm float-right delete');
 
 
-//ChildNodes
-// console.log(itemList.childNodes);
-// console.log(itemList.children);
-// console.log(itemList.children[1]);
-// itemList.children[1].style.color = 'red'
 
-// //firstChild
-// console.log(itemList.firstChild);
-// //firstElementChild
-// console.log(itemList.firstElementChild);
+// Remove item
+function removeItem(e){
+  if(e.target.classList.contains('delete')){
+    if(confirm('Are You Sure?')){
+      var li = e.target.parentElement;
+      itemList.removeChild(li);
+    }
+  }
+}
 
-//LastChild
-// console.log(itemList.lastChild);
-// //LAstElementChild
-// console.log(itemList.lastElementChild);
+// Filter Items
+function filterItems(e){
+  // convert text to lowercase
+  var text = e.target.value.toLowerCase();
+  // Get lis
+  var items = itemList.getElementsByTagName('li');
+  // Convert to an array
+  Array.from(items).forEach(function(item){
+    var itemName = item.firstChild.textContent;
+    if(itemName.toLowerCase().indexOf(text) != -1){
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
 
-//nextSiblings
-// console.log(itemList.nextElementSibling);
-// console.log(itemList.nextSibling);
+const listItems = document.querySelectorAll('li');
 
-//previousSiblings
-// console.log(itemList.previousSibling);
-// console.log(itemList.previousElementSibling);
-// itemList.previousElementSibling.style.color ='green'
+for (const listItem of listItems) {
+  const editButton = document.createElement('button');
+  editButton.textContent = 'Edit';
+  listItem.appendChild(editButton);
+}
 
-//createElement
 
-var newDiv = document.createElement('div');
-
-//Add Class
-newDiv.className='hello'
-//Add ID
-newDiv.id='hello1'
-//add attribute
-newDiv.setAttribute('title','Hello Div')
-//create TextNode
-var newDivText = document.createTextNode('Hello World');
-//Add text to div
-newDiv.appendChild(newDivText)
-console.log(newDiv);
-
-var container = document.querySelector('header .container');
-var h1 = document.querySelector('header h1');
-
-container.insertBefore(newDiv,h1);
-
-var items = document.querySelector('#items');
-var item1 = document.querySelector(' li');
-
-items.insertBefore(newDiv,item1)
